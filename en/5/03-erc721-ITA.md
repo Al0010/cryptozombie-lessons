@@ -1,6 +1,6 @@
 ---
 title: balanceOf & ownerOf
-actions: ['checkAnswer', 'hints']
+actions: ['Verifica la risposta', 'hints']
 requireLogin: true
 material:
   editor:
@@ -15,11 +15,11 @@ material:
         contract ZombieOwnership is ZombieAttack, ERC721 {
 
           function balanceOf(address _owner) external view returns (uint256) {
-            // 1. Return the number of zombies `_owner` has here
+            // 1. Restituisci il numero di zombie `_owner` che ha qui 
           }
 
           function ownerOf(uint256 _tokenId) external view returns (address) {
-            // 2. Return the owner of `_tokenId` here
+            // 2. Restituisci la proprietà `_tokenId` qui
           }
 
           function transferFrom(address _from, address _to, uint256 _tokenId) external payable {
@@ -330,11 +330,11 @@ material:
       }
 ---
 
-Great, let's dive into the ERC721 implementation!
+Bene, tuffiamoci nell'implementazione di token ERC721!
 
-We've gone ahead and copied the empty shell of all the functions you'll be implementing in this lesson.
+Ci siamo portati avanti e abbiamo copiato la shell con tutte le funzioni che implementerai in questa lezione. 
 
-In this chapter, we're going to implement the first two methods: `balanceOf` and `ownerOf`.
+In questo capitolo, implementeremo i primi due metodi: `balanceOf` e `ownerOf`.
 
 ### `balanceOf`
 
@@ -342,9 +342,9 @@ In this chapter, we're going to implement the first two methods: `balanceOf` and
   function balanceOf(address _owner) external view returns (uint256 _balance);
 ```
 
-This function simply takes an `address`, and returns how many tokens that `address` owns.
+Questa funzione prende semplicemente l' `address` e restituisce quanti token sono di proprietà di questo `address`.
 
-In our case, our "tokens" are Zombies. Do you remember where in our DApp we stored how many zombies an owner has?
+In questo caso, i nostri "tokens" sono Zombies. Ricordi dove abbiamo memorizzato quanti zombie ha un proprietario nella nostra DApp?
 
 ### `ownerOf`
 
@@ -352,18 +352,18 @@ In our case, our "tokens" are Zombies. Do you remember where in our DApp we stor
   function ownerOf(uint256 _tokenId) external view returns (address _owner);
 ```
 
-This function takes a token ID (in our case, a Zombie ID), and returns the `address` of the person who owns it.
+Questa funzione prende un token ID (nel nostro caso uno Zombie ID) e ritorna l' `address` della persona che lo possiede.
 
-Again, this is very straightforward for us to implement, since we already have a `mapping` in our DApp that stores this information. We can implement this function in one line, just a `return` statement.
+Anche in questo caso, l'implementazione è molto semplice, dal momento che abbiamo già un `mapping` nella nostra DApp che memorizza queste informazioni. Possiamo implementare questa funzione in una riga tramite una dichiarazione `return`.
 
-> Note: Remember, `uint256` is equivalent to `uint`. We've been using `uint` in our code up until now, but we're using `uint256` here because we copy/pasted from the spec.
+> Nota: ricorda che `uint256` è equivalente a `uint`. Finora abbiamo usato `uint` nel nostro codice, qui usiamo `uint256`.
 
-## Putting it to the Test
+## Mettiti alla prova 
 
-I'll leave it to you to figure out how to implement these 2 functions.
+Lascio a te il compito di capire come implementare queste due funzioni.
 
-Each function should simply be 1 line of code, a `return` statement. Take a look at our code from previous lessons to see where we're storing this data. If you can't figure it out, you can hit the "show me the answer" button for some help.
+Ogni funzione dovrebbe essere costituita semplicemente da una riga di codice, una dichiarazione "return". Dai un'occhiata al codice delle lezioni precedenti per vedere dove memorizziamo i dati. Se non riesci a capirlo, non preoccuparti, puoi sempre premere il pulsante "mostrami la risposta" per avere un aiuto.
 
-1. Implement `balanceOf` to return the number of zombies `_owner` has.
+1. Implementa `balanceOf` per restituire il numero di zombie che `_owner` possiede.
 
-2. Implement `ownerOf` to return the address of whoever owns the zombie with ID `_tokenId`.
+2. Implementa `ownerOf` per restituire l'indirizzo di chi possiede lo zombie con ID `_tokenId`.
