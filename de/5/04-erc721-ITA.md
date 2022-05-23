@@ -1,7 +1,7 @@
 ---
 title: Refactoring
 actions:
-  - 'checkAnswer'
+  - 'Verifica la risposta'
   - 'hints'
 requireLogin: true
 material:
@@ -32,7 +32,7 @@ material:
         
         KittyInterface kittyContract;
         
-        // 1. Change modifier name to `onlyOwnerOf`
+        // 1. Cambia il nome del modificatore con `onlyOwnerOf`
         modifier ownerOf(uint _zombieId) {
         require(msg.sender == zombieToOwner[_zombieId]);
         _;
@@ -50,7 +50,7 @@ material:
         return (_zombie.readyTime <= now);
         }
         
-        // 2. Change modifier name here as well
+        // 2. Cambia anche qui il nome del modificatore 
         function feedAndMultiply(uint _zombieId, uint _targetDna, string _species) internal ownerOf(_zombieId) {
         Zombie storage myZombie = zombies[_zombieId];
         require(_isReady(myZombie));
@@ -333,24 +333,24 @@ material:
       }
       }
 ---
-Uh oh! We've just introduced an error in our code that will make it not compile. Did you notice it?
+Wow! Abbiamo appena introdotto un errore nel nostro codice che non lo gli permetterà la giusta compilazione. L'hai notato?
 
-In the previous chapter we defined a function called `ownerOf`. But if you recall from Lesson 4, we also created a `modifier` with the same name, `ownerOf`, in `zombiefeeding.sol`.
+Nei capitoli precedenti abbiamo definito una funzione chiamata `ownerOf`. Ma se ricordi anche nella Lezione 4 abbiamo creato un file `modifier` con lo stesso nome, `ownerOf` in `zombiefeeding.sol`.
 
-If you tried compiling this code, the compiler would give you an error saying you can't have a modifier and a function with the same name.
+Se si provasse a compilare questo codice, il compilatore darebbe un errore dicendo che non è possibile avere un modificatore e una funzione con lo stesso nome.
 
-So should we just change the function name in `ZombieOwnership` to something else?
+Quindi significa che dovremmo cambiare il nome della funzione in `ZombieOwnership` a qualcos'altro?
 
-No, we can't do that!!! Remember, we're using the ERC721 token standard, which means other contracts will expect our contract to have functions with these exact names defined. That's what makes these standards useful — if another contract knows our contract is ERC721-compliant, it can simply talk to us without needing to know anything about our internal implementation decisions.
+No, non possiamo farlo!!! Ricorda, stiamo utilizzando un token standard ERC721, significa che gli altri contratti si aspetteranno che il nostro contratto abbia definito funzioni con questi nomi esatti. Ecco cosa rende davvero speciale questo tipo di standard — se un altro contratto sa che il nostro contratto è ERC721 - può semplicemente parlare con il nostro smart contract senza dover sapere nulla delle nostre decisioni interne di implementazione.
 
-So that means we'll have to refactor our code from Lesson 4 to change the name of the `modifier` to something else.
+Ciò significa che dovremo rivedere il codice della Lezione 4 per cambiare il nome del `modifier` in qualcos'altro.
 
-## Putting it to the Test
+## Mettiti alla prova
 
-We're back in `zombiefeeding.sol`. We're going to change the name of our `modifier` from `ownerOf` to `onlyOwnerOf`.
+Siamo tornati in `zombiefeeding.sol`. Stiamo andando a cambiare il nome del nostro `modifier` da `ownerOf` a `onlyOwnerOf`.
 
-1. Change the name of the modifier definition to `onlyOwnerOf`
+1. Cambia il nome del modificatore in `onlyOwnerOf`.
 
-2. Scroll down to the function `feedAndMultiply`, which uses this modifier. We'll need to change the name here as well.
+2. Scorri in basso alla funzione `feedAndMultiply`, che usa questo modificatore. Dovremo cambiare il nome anche qui.
 
-> Note: We also use this modifier in `zombiehelper.sol` and `zombieattack.sol`, but so we don't spend too much of this lesson refactoring, we've gone ahead and changed the modifier names in those files for you.
+> Nota: Utilizziamo il modificatore anche in `zombiehelper.sol` e `zombieattack.sol`, ma per non perdere troppo tempo in questa lezione e rivedere l'intero codice, abbiamo pensato noi a cambiare i nomi dei modificatori in questi file.
