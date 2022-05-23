@@ -1,6 +1,6 @@
 ---
-title: "ERC721: Transfer Logic"
-actions: ['checkAnswer', 'hints']
+title: "ERC721: Logica di trasferimento"
+actions: ['Verifica la riposta', 'hints']
 requireLogin: true
 material:
   editor:
@@ -22,7 +22,7 @@ material:
             return zombieToOwner[_tokenId];
           }
 
-          // Define _transfer() here
+          // Definisci _transfer() qui
 
           function transferFrom(address _from, address _to, uint256 _tokenId) external payable {
 
@@ -338,42 +338,42 @@ material:
       }
 ---
 
-Great, we've fixed the conflict!
+Perfetto, abbiamo sistemato il problema!
 
-Now we're going to continue our ERC721 implementation by looking at transfering ownership from one person to another.
+Ora continueremo la nostra implementazione dell'ERC721 analizzando il trasferimento della proprietà da una persona all'altra.
 
-Note that the ERC721 spec has 2 different ways to transfer tokens:
+Nota che la specifica ERC721 prevede due modi diversi per trasferire i token:
 
 `function transferFrom(address _from, address _to, uint256 _tokenId) external payable;`
 
-and
+e
 
 `function approve(address _approved, uint256 _tokenId) external payable;`
 
 `function transferFrom(address _from, address _to, uint256 _tokenId) external payable;`
 
-1. The first way is the token's owner calls `transferFrom` with his `address` as the `_from` parameter, the `address` he wants to transfer to as the `_to` parameter, and the `_tokenId` of the token he wants to transfer.
+1. Il primo modo è che il proprietario del token chiami `transferFrom` con il suo `address` come parametro `_to`, l'`address` che vuole trasferire come parametro `_to` e il `_tokenId` del token che vuole trasferire.
 
-2. The second way is the token's owner first calls `approve` with the address he wants to transfer to, and the `_tokenID` . The contract then stores who is approved to take a token, usually in a `mapping (uint256 => address)`. Then, when the owner or the approved address calls `transferFrom`, the contract checks if that `msg.sender` is  the owner or is approved by the owner to take the token, and if so it transfers the token to him.
+2. Il secondo modo è che il proprietario del token chiami prima `approve` con l'indirizzo che vuole trasferire e il `_tokenID`. Il contratto memorizza quindi chi è approvato a prendere un token, di solito in una `mapping (uint256 => address)`. Poi, quando il proprietario o l'address approvato chiama `transferFrom`, il contratto controlla se quel `msg.sender` è il proprietario o è approvato dal proprietario per prendere il token, e in tal caso gli trasferisce il token.
 
-Notice that both methods contain the same transfer logic. In one case the sender of the token calls the `transferFrom` function; in the other the  owner or the approved receiver of the token calls it.
+Si noti che entrambi i metodi contengono la stessa logica di trasferimento. In un caso il mittente del token chiama la funzione `transferFrom`; nell'altro la chiama il proprietario o il destinatario approvato del token.
 
-So it makes sense for us to abstract this logic into its own private function, `_transfer`, which is then called by `transferFrom`.
+Quindi ha senso inserire questa logica in una funzione privata, `_transfer`, che viene poi richiamata da `transferFrom`.
 
-## Putting it to the Test
+## Mettiti alla prova
 
-Let's define the logic for `_transfer`.
+Definiamo la logica di `_transfer`.
 
-1. Define a function named `_transfer`. It will take 3 arguments, `address _from`, `address _to`, and `uint256 _tokenId`. It should be a `private` function.
+1. Definisci una funzione chiamata `_transfer`. Sono necessari 3 argomenti, `address _from`, `address _to`, e `uint256 _tokenId`. Dovrebbe essere una funzione `private`.
 
-2. We have 2 mappings that will change when ownership changes: `ownerZombieCount` (which keeps track of how many zombies an owner has) and `zombieToOwner` (which keeps track of who owns what).
+2. Abbiamo due mappature che cambiano quando la proprietà cambia: `ownerZombieCount` (che tiene traccia di quanti zombie ha un proprietario) e `zombieToOwner` (che tiene traccia di chi possiede cosa).
 
-  The first thing our function should do is increment `ownerZombieCount` for the person **receiving** the zombie (`address _to`). Use `++` to increment.
+  La prima cosa che la nostra funzione deve fare è incrementare il valore di `ownerZombieCount` per la persona che **riceve** lo zombie (`address _to`). Usa `++` per incrementare il valore.
 
-3. Next, we'll need to **decrease** the `ownerZombieCount` for the person **sending** the zombie (`address _from`). Use `--` to decrement.
+3. Successivamente, abbiamo bisogno di **diminuire** `ownerZombieCount` per la persona che **invia** lo zombie (`address _from`). Usa `--` per diminuire il valore.
 
-4. Lastly, we'll want to change `zombieToOwner` mapping for this `_tokenId` so it now points to `_to`.
+4. In fine, vogliamo cambiare la mappatura di `zombieToOwner` per `_tokenId` che ora punta a `_to`.
 
-5. I lied, that wasn't the last step. There's one more thing we should do.
+5. Ho mentito, non era l'ultimo passaggio. C'è un'altra cosa che dovrai fare.
 
-  The ERC721 spec includes a `Transfer` event. The last line of this function should fire `Transfer` with the correct information — check `erc721.sol` to see what arguments it's expecting to be called with and implement it here.
+  Le specifiche ERC721 includono un evento `Transfer`. L'ultima riga di questa funzione dovrebbe lanciare `Transfer` con le informazioni corrette: controlla `erc721.sol` per vedere con quali argomenti si aspetta di essere chiamato e implementalo qui.
