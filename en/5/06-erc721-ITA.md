@@ -1,6 +1,6 @@
 ---
-title: "ERC721: Transfer Cont'd"
-actions: ['checkAnswer', 'hints']
+title: "ERC721: Trasferimento Parte 2"
+actions: ['Verifica la risposta', 'hints']
 requireLogin: true
 material:
   editor:
@@ -14,7 +14,7 @@ material:
 
         contract ZombieOwnership is ZombieAttack, ERC721 {
 
-          // 1. Define mapping here
+          // 1. Definisci la mappatura qui
 
           function balanceOf(address _owner) external view returns (uint256) {
             return ownerZombieCount[_owner];
@@ -32,8 +32,8 @@ material:
           }
 
           function transferFrom(address _from, address _to, uint256 _tokenId) external payable {
-            // 2. Add the require statement here
-            // 3. Call _transfer
+            // 2. Aggiungi l'istruzione require qui
+            // 3. Chiama _transfer
           }
 
           function approve(address _approved, uint256 _tokenId) external payable {
@@ -351,23 +351,23 @@ material:
       }
 ---
 
-Great! That was the difficult part — now implementing the external `transferFrom` function will be easy, since our `_transfer` function already does almost all the heavy lifting.
+Ottimo! Questa era la parte difficile: ora implementare la funzione esterna `transferFrom` sarà facile, dato che la nostra funzione `_transfer` fa già quasi tutto il lavoro pesante al posto nostro.
 
-## Putting it to the Test
+## Mettiti alla prova
 
-1. First, we want to make sure only the owner or the approved address of a token/zombie can transfer it. Let's define a mapping called `zombieApprovals`. It should map a `uint` to an `address`.
-This way, when someone that is not the owner calls `transferFrom` with a `_tokenId`, we can use this mapping to quickly look up if he is approved to take that token.
+1. Per prima cosa, vogliamo assicurarci che solo il proprietario o l'indirizzo approvato di un token/zombie possa trasferirlo. Definiamo una mappatura chiamata `zombieApprovals`. Dovrebbe mappare un `uint` a un `address`.
+In questo modo, quando qualcuno che non è il proprietario chiama `transferFrom` con un `_tokenId`, possiamo usare questa mappatura per cercare rapidamente se è approvato a prendere quel token.
 
-2. Next, let's add a `require` statement to `transferFrom`. It should make sure that only the owner or the approved address of a token/zombie can transfer it.
+2. Successivamente, aggiungiamo una dichiarazione `require` a `transferFrom`. Dovrebbe assicurarsi che solo il proprietario o l'indirizzo approvato di un token/zombie possa trasferirlo.
 
-3. Lastly, don't forget to call `_transfer`.
+3. In fine, non dimenticare di chiamare `_transfer`.
 
-> Note: Checking that only the owner or the approved address of a token/zombie can transfer it means that at least one of these conditions must be true:
+> Nota: Verificare che solo il proprietario o l'indirizzo approvato di un token/zombie possa trasferirlo significa che almeno una di queste condizioni deve essere vera:
 
->`zombieToOwner` for `_tokenId` is equal to `msg.sender`
+>`zombieToOwner` di `_tokenId` è uguale a `msg.sender`
 
->or
+> oppure
 
->`zombieApprovals` for `_tokenId` is equal to `msg.sender`
+>`zombieApprovals` di `_tokenId` è uguale a `msg.sender`
 
-Don't worry about filling in data in the  `zombieApprovals` mapping, we'll do it in the next chapter.
+Non preoccuparti di inserire i dati nella mappatura `zombieApprovals`, lo faremo nel prossimo capitolo.
