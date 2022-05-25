@@ -1,6 +1,6 @@
 ---
-title: "ERC721: Approve"
-actions: ['checkAnswer', 'hints']
+title: "ERC721: Approvazione"
+actions: ['Verifica la risposta', 'hints']
 requireLogin: true
 material:
   editor:
@@ -36,9 +36,9 @@ material:
             _transfer(_from, _to, _tokenId);
           }
 
-          // 1. Add function modifier here
+          // 1. Aggiungi il modificatore qui 
           function approve(address _approved, uint256 _tokenId) external payable {
-            // 2. Define function here
+            // 2. Definisci la funzione qui 
           }
 
 
@@ -353,18 +353,18 @@ material:
       }
 ---
 
-Now, let's implement `approve`.
+Ora, implementiamo `approve`.
 
-Remember, with `approve` the transfer happens in 2 steps:
+Ricorda, con `approve` il trasferimento avviene 2 step:
 
-1. You, the owner, call `approve` and give it the `_approved` address of the new owner, and the `_tokenId` you want them to take.
+1. Il proprietario corrente chiama `approve` e trasferisce con `_approved` il ruolo di nuovo proprietario al nuovo address, assieme al `_tokenId` che vuole trasferigli. 
 
-2. The new owner calls `transferFrom` with the `_tokenId`. Next, the contract checks to make sure the new owner has been already approved, and then transfers them the token.
+2. Il nuovo proprietario chiama `transferFrom` con `_tokenId`. Successivamente, il contratto controllerà se il nuovo proprietario è stato approvato e successivamente gli invierà il token.
 
-Because this happens in 2 function calls, we need to use the `zombieApprovals` data structure to store who's been approved for what in between function calls.
+Dato che questo accade in due diverse chiamate di funzioni, dobbiamo usare la struttura dati `zombieApprovals` per memorizzare chi è stato approvato e per cosa nelle chiamate di queste funzioni.
 
-## Putting it to the Test
+## Mettiti alla prova
 
-1. In the `approve` function, we want to make sure only the owner of the token can give someone approval to take it. So we need to add the `onlyOwnerOf` modifier to `approve`
+1. Nella funzione `approve`, vogliamo assicurarci che solo il proprietario del token possa dare l'approvazione a qualcuno per prenderlo. Dobbiamo quindi aggiungere il modificatore `onlyOwnerOf` a `approve`.
 
-2. For the body of the function, set `zombieApprovals` for `_tokenId` equal to the `_approved` address.
+2. Nel corpo della funzione, imposta `zombieApprovals` di `_tokenId` uguale all'indirizzo `_approved`.
